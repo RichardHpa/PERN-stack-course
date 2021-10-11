@@ -9,6 +9,7 @@
 	"author": "Richard M Hpa <richard.m.hpa@gmail.com> (https://richard-hpa.com/)",
 	"license": "MIT",
 	"dependencies": {
+		"connect-timeout": "^1.9.0",
 		"cors": "^2.8.5",
 		"dotenv": "^10.0.0",
 		"express": "^4.17.1",
