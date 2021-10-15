@@ -20,3 +20,21 @@ $ npm start
 ```
 
 Server will then run on localhost:5000
+
+## Client
+
+### Install
+
+```sh
+$ cd client
+$ npm install
+```
+
+
+### Running the client
+
+```sh
+$ npm start
+```
+
+Server will then run on localhost:3000
