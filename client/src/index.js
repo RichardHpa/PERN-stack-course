@@ -3,13 +3,16 @@ import ReactDOM from 'react-dom'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { SnackbarProvider } from 'notistack'
 
 const theme = createTheme({})
 
 ReactDOM.render(
 	<React.StrictMode>
 		<ThemeProvider theme={theme}>
-			<App />
+			<SnackbarProvider maxSnack={3}>
+				<App />
+			</SnackbarProvider>
 		</ThemeProvider>
 	</React.StrictMode>,
 	document.getElementById('root')
