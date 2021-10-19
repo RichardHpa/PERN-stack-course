@@ -4,15 +4,19 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { SnackbarProvider } from 'notistack'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 const theme = createTheme({})
+const queryClient = new QueryClient()
 
 ReactDOM.render(
 	<React.StrictMode>
 		<ThemeProvider theme={theme}>
-			<SnackbarProvider maxSnack={3}>
-				<App />
-			</SnackbarProvider>
+			<QueryClientProvider client={queryClient}>
+				<SnackbarProvider maxSnack={3}>
+					<App />
+				</SnackbarProvider>
+			</QueryClientProvider>
 		</ThemeProvider>
 	</React.StrictMode>,
 	document.getElementById('root')
