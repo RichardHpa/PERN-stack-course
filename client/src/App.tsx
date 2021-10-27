@@ -2,16 +2,9 @@ import { useEffect, useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { getAllTodos, createTodo } from '../src/api/todos';
 import Header from './layouts/Header';
-import {
-  Container,
-  Paper,
-  TextField,
-  Grid,
-  Button,
-  Backdrop,
-  CircularProgress
-} from '@mui/material';
+import { Container, Paper, TextField, Grid, Button } from '@mui/material';
 import { useSnackbar } from 'notistack';
+import Loading from './components/Loading';
 
 function App() {
   const { data } = useQuery('todos', getAllTodos);
@@ -75,12 +68,7 @@ function App() {
           </Grid>
         </Paper>
       </Container>
-      <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={isLoading}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <Loading isLoading={isLoading} />
     </div>
   );
 }
