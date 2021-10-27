@@ -1,12 +1,36 @@
 import { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
-import { getAllTodos } from '../src/api/todos';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { getAllTodos, createTodo } from '../src/api/todos';
 import Header from './layouts/Header';
-import { Container, Paper, TextField, Grid, Button } from '@mui/material';
+import {
+  Container,
+  Paper,
+  TextField,
+  Grid,
+  Button,
+  Backdrop,
+  CircularProgress
+} from '@mui/material';
+import { useSnackbar } from 'notistack';
 
 function App() {
   const { data } = useQuery('todos', getAllTodos);
   const [description, setDescription] = useState('');
+  const queryClient = useQueryClient();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const { mutate, isLoading } = useMutation(createTodo, {
+    onSuccess: (data) => {
+      enqueueSnackbar('Success', { variant: 'success' });
+      setDescription('');
+    },
+    onError: () => {
+      enqueueSnackbar('Something went wrong', { variant: 'error' });
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries('todos');
+    }
+  });
 
   useEffect(() => {
     if (data) console.log(data);
@@ -17,7 +41,7 @@ function App() {
   };
 
   const handleSubmit = () => {
-    console.log(description);
+    mutate({ description });
   };
 
   return (
@@ -35,6 +59,7 @@ function App() {
                 fullWidth
                 label="Add Todo"
                 id="fullWidth"
+                value={description}
                 onChange={handleType}
               />
             </Grid>
@@ -50,6 +75,12 @@ function App() {
           </Grid>
         </Paper>
       </Container>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={isLoading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </div>
   );
 }
