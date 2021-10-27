@@ -11,17 +11,17 @@ const theme = createTheme({});
 const queryClient = new QueryClient();
 
 ReactDOM.render(
-	<React.StrictMode>
-		<ThemeProvider theme={theme}>
-			<CssBaseline />
-			<QueryClientProvider client={queryClient}>
-				<SnackbarProvider maxSnack={3}>
-					<App />
-				</SnackbarProvider>
-			</QueryClientProvider>
-		</ThemeProvider>
-	</React.StrictMode>,
-	document.getElementById('root')
+  <React.StrictMode>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <QueryClientProvider client={queryClient}>
+        <SnackbarProvider maxSnack={3}>
+          <App />
+        </SnackbarProvider>
+      </QueryClientProvider>
+    </ThemeProvider>
+  </React.StrictMode>,
+  document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function
