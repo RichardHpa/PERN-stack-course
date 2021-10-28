@@ -2,9 +2,21 @@ import { useEffect, useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { getAllTodos, createTodo } from '../src/api/todos';
 import Header from './layouts/Header';
-import { Container, Paper, TextField, Grid, Button } from '@mui/material';
+import {
+  Container,
+  Paper,
+  TextField,
+  Grid,
+  Button,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Divider
+} from '@mui/material';
 import { useSnackbar } from 'notistack';
 import Loading from './components/Loading';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function App() {
   const { data } = useQuery('todos', getAllTodos);
@@ -64,6 +76,26 @@ function App() {
               >
                 Submit
               </Button>
+            </Grid>
+          </Grid>
+        </Paper>
+        <Paper>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <List>
+                {data?.map((todo: any) => (
+                  <ListItem
+                    key={todo.todo_id}
+                    secondaryAction={
+                      <IconButton edge="end" aria-label="delete">
+                        <DeleteIcon />
+                      </IconButton>
+                    }
+                  >
+                    <ListItemText primary={todo.description} />
+                  </ListItem>
+                ))}
+              </List>
             </Grid>
           </Grid>
         </Paper>
