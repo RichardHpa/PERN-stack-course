@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import render from 'tests/helpers/ReactQueryWrapper';
 import App from './App';
 
 test.skip('renders learn react link', () => {
