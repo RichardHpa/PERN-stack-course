@@ -5,6 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 const TodoList = () => {
   const { data } = useQuery('todos', getAllTodos);
+
   return (
     <List>
       {data?.map((todo: any) => (
