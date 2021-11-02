@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react';
-import render from 'tests/helpers/ReactQueryWrapper';
+import render from 'tests/AppWrapper';
 import TodoList from '.';
 
 describe('TodoList', () => {

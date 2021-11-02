@@ -1,0 +1,39 @@
+{
+  "name": "pern-todo-app",
+  "version": "1.0.0",
+  "description": "client and server for a pern todo-list",
+  "main": "client/src/index.js",
+  "scripts": {
+    "client:install": "npm install --prefix client",
+    "client:start": "npm run start --prefix client",
+    "client:test": "CI=true npm run test  --prefix client ",
+    "server:install": "npm install --prefix server",
+    "server:start": "npm run start --prefix server",
+    "server:dev": "npm run dev --prefix server",
+    "start": "concurrently \"npm run server:start\" \"npm run client:start\" ",
+    "dev": "concurrently \"npm run server:dev\" \"npm run client:start\" ",
+    "install:both": "concurrently \"npm npm run server:install\" \"npm run client:install\" ",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RichardHpa/PERN-stack-course.git"
+  },
+  "keywords": [
+    "pern",
+    "todo",
+    "postgres",
+    "react"
+  ],
+  "author": "Richard M Hpa <richard.m.hpa@gmail.com> (https://richard-hpa.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RichardHpa/PERN-stack-course/issues"
+  },
+  "homepage": "https://github.com/RichardHpa/PERN-stack-course#readme",
+  "devDependencies": {
+    "concurrently": "^6.3.0",
+    "husky": "^7.0.4",
+    "nodemon": "^2.0.14"
+  }
+}

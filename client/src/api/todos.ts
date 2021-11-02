@@ -30,7 +30,6 @@ interface Todo {
 
 export const getTodo = async ({ id }: Todo) => {
   try {
-    console.log(id);
     const res = await axios.get(`http://localhost:5000/todos/${id}`);
     return res.data;
   } catch (err: any) {

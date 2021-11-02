@@ -1,97 +1,94 @@
-const express = require('express')
-const app = express()
-const cors = require('cors')
-const pool = require('./db')
-require('dotenv').config()
-const timeout = require('connect-timeout')
+const express = require('express');
+const app = express();
+const cors = require('cors');
+const pool = require('./db');
+require('dotenv').config();
+const timeout = require('connect-timeout');
 
 // middleware
-app.use(cors())
-app.use(express.json()) //req.body
-app.use(timeout('2000'))
+app.use(cors());
+app.use(express.json()); //req.body
+app.use(timeout('2000'));
 
 // ROUTES //
 // create a todo
 app.post('/todos', async (req, res) => {
-	try {
-		const { description } = req.body
-		if (!description || description.length === 0) {
-			return res.status(400).json('Your request is missing a description')
-		}
-		const newTodo = await pool.query(
-			'INSERT INTO todo (description) VALUES($1) RETURNING *',
-			[description]
-		)
-		res.json(newTodo.rows[0])
-	} catch (err) {
-		res.status(500).json('Something went wrong')
-	}
-})
+  try {
+    const { description } = req.body;
+    if (!description || description.length === 0) {
+      return res.status(400).json('Your request is missing a description');
+    }
+    const newTodo = await pool.query('INSERT INTO todo (description) VALUES($1) RETURNING *', [
+      description,
+    ]);
+    res.json(newTodo.rows[0]);
+  } catch (err) {
+    res.status(500).json('Something went wrong');
+  }
+});
 
 // get all todos
 app.get('/todos', async (req, res) => {
-	try {
-		const allTodos = await pool.query('SELECT * FROM todo')
-		res.json(allTodos.rows)
-	} catch (err) {
-		res.status(500).json('Something went wrong')
-	}
-})
+  try {
+    const allTodos = await pool.query('SELECT * FROM todo');
+    res.json(allTodos.rows);
+  } catch (err) {
+    res.status(500).json('Something went wrong');
+  }
+});
 
 //get a todo
 app.get('/todos/:id', async (req, res) => {
-	try {
-		const { id } = req.params
-		const todo = await pool.query('SELECT * FROM todo WHERE todo_id = $1', [id])
-		if (todo.rowCount === 0) {
-			res.status(500).json('Cannot find todo with that id number')
-		} else {
-			res.json(todo.rows[0])
-		}
-	} catch (err) {
-		res.status(500).json('Something went wrong')
-	}
-})
+  try {
+    const { id } = req.params;
+    const todo = await pool.query('SELECT * FROM todo WHERE todo_id = $1', [id]);
+    if (todo.rowCount === 0) {
+      res.status(404).json('Cannot find todo with that id number');
+    } else {
+      res.json(todo.rows[0]);
+    }
+  } catch (err) {
+    res.status(500).json('Something went wrong');
+  }
+});
 
 // update a todo
 app.put('/todos/:id', async (req, res) => {
-	try {
-		const { id } = req.params
-		const { description } = req.body
-		if (!description || description.length === 0) {
-			return res.status(400).json('Your request is missing a description')
-		}
-		const updateTodo = await pool.query(
-			'UPDATE todo SET description = $1 WHERE todo_id = $2',
-			[description, id]
-		)
-		if (updateTodo.rowCount === 0) {
-			res.status(500).json('Cannot find todo with that id number')
-		} else {
-			res.json('Todo was updated!')
-		}
-	} catch (err) {
-		res.status(500).json('Cannot find todo with that id number')
-	}
-})
+  try {
+    const { id } = req.params;
+    const { description } = req.body;
+    if (!description || description.length === 0) {
+      return res.status(400).json('Your request is missing a description');
+    }
+    const updateTodo = await pool.query('UPDATE todo SET description = $1 WHERE todo_id = $2', [
+      description,
+      id,
+    ]);
+    if (updateTodo.rowCount === 0) {
+      res.status(404).json('Cannot find todo with that id number');
+    } else {
+      res.json('Todo was updated!');
+    }
+  } catch (err) {
+    res.status(500).json('Cannot find todo with that id number');
+  }
+});
 
 // delete a todo
 app.delete('/todos/:id', async (req, res) => {
-	try {
-		const { id } = req.params
-		const deleteTodo = await pool.query('DELETE FROM todo WHERE todo_id = $1', [
-			id,
-		])
-		if (deleteTodo.rowCount === 0) {
-			res.status(500).json('Cannot find todo with that id number')
-		} else {
-			res.json('Todo was updated!')
-		}
-	} catch (err) {
-		res.status(500).json('Cannot find todo with that id number')
-	}
-})
+  try {
+    const { id } = req.params;
+    const deleteTodo = await pool.query('DELETE FROM todo WHERE todo_id = $1', [id]);
+    if (deleteTodo.rowCount === 0) {
+      res.status(404).json('Cannot find todo with that id number');
+    } else {
+      res.json('Todo was deleted!');
+    }
+  } catch (err) {
+    res.status(500).json('Something went wrong');
+  }
+});
 
 app.listen(5000, () => {
-	console.log('server has started on port 5000')
-})
+  console.log('server has started on port 5000');
+});

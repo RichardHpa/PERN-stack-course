@@ -1,44 +1,37 @@
-import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { getAllTodos, deleteTodo } from 'api/todos';
-import { IconButton, List, ListItem, ListItemText } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { useSnackbar } from 'notistack';
+import { useQuery } from 'react-query';
+import { getAllTodos } from 'api/todos';
+import {
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  Tooltip
+} from '@mui/material';
+import CreateIcon from '@mui/icons-material/Create';
+import DeleteTodo from 'components/DeleteTodo';
 
 const TodoList = () => {
   const { data } = useQuery('todos', getAllTodos);
-  const queryClient = useQueryClient();
-  const { enqueueSnackbar } = useSnackbar();
 
-  const { mutateAsync } = useMutation(deleteTodo, {
-    onSuccess: (res) => {
-      queryClient.invalidateQueries('todos');
-      enqueueSnackbar('Successfully removed Todo', { variant: 'success' });
-    },
-    onError: () => {
-      enqueueSnackbar('Something went wrong.', { variant: 'error' });
-    }
-  });
-
-  const handleDelete = async (id: number) => {
-    await mutateAsync({ id });
-  };
+  const handleEdit = (id: number) => {};
 
   return (
     <List>
       {data?.map((todo: any) => (
-        <ListItem
-          key={todo.todo_id}
-          secondaryAction={
-            <IconButton
-              edge="end"
-              aria-label="delete"
-              onClick={() => handleDelete(todo.todo_id)}
-            >
-              <DeleteIcon />
-            </IconButton>
-          }
-        >
+        <ListItem key={todo.todo_id}>
           <ListItemText primary={todo.description} />
+          <ListItemSecondaryAction>
+            <Tooltip title="Edit">
+              <IconButton
+                aria-label="edit"
+                onClick={() => handleEdit(todo.todo_id)}
+              >
+                <CreateIcon />
+              </IconButton>
+            </Tooltip>
+            <DeleteTodo itemId={todo.todo_id} />
+          </ListItemSecondaryAction>
         </ListItem>
       ))}
     </List>
