@@ -13,7 +13,8 @@
     "start": "concurrently \"npm run server:start\" \"npm run client:start\" ",
     "dev": "concurrently \"npm run server:dev\" \"npm run client:start\" ",
     "install:both": "concurrently \"npm npm run server:install\" \"npm run client:install\" ",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "node node_modules/protractor/bin/webdriver-manager update"
   },
   "repository": {
     "type": "git",
@@ -33,7 +34,7 @@
   "homepage": "https://github.com/RichardHpa/PERN-stack-course#readme",
   "devDependencies": {
     "concurrently": "^6.3.0",
-    "husky": "^7.0.4",
+    "husky": "^7.0.0",
     "nodemon": "^2.0.14"
   }
 }
