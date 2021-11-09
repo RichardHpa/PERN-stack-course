@@ -1,39 +1,30 @@
 import { useQuery } from 'react-query';
 import { getAllTodos } from 'api/todos';
 import {
-  IconButton,
   List,
   ListItem,
   ListItemText,
-  ListItemSecondaryAction,
-  Tooltip
+  ListItemSecondaryAction
 } from '@mui/material';
-import CreateIcon from '@mui/icons-material/Create';
 import DeleteTodo from 'components/DeleteTodo';
+import EditTodo from 'components/EditTodo';
 
 const TodoList = () => {
   const { data } = useQuery('todos', getAllTodos);
 
-  const handleEdit = (id: number) => {};
-
   return (
     <List>
-      {data?.map((todo: any) => (
-        <ListItem key={todo.todo_id}>
-          <ListItemText primary={todo.description} />
-          <ListItemSecondaryAction>
-            <Tooltip title="Edit">
-              <IconButton
-                aria-label="edit"
-                onClick={() => handleEdit(todo.todo_id)}
-              >
-                <CreateIcon />
-              </IconButton>
-            </Tooltip>
-            <DeleteTodo itemId={todo.todo_id} />
-          </ListItemSecondaryAction>
-        </ListItem>
-      ))}
+      {data?.map((todo: { todo_id: number; description: string }) => {
+        return (
+          <ListItem key={todo.todo_id}>
+            <ListItemText primary={todo.description} />
+            <ListItemSecondaryAction>
+              <EditTodo item={{ ...todo }} />
+              <DeleteTodo itemId={todo.todo_id} />
+            </ListItemSecondaryAction>
+          </ListItem>
+        );
+      })}
     </List>
   );
 };
