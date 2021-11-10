@@ -13,6 +13,8 @@ import {
 } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
 import { updateTodo } from 'api/todos';
+import { useSnackbar } from 'notistack';
+
 import type { VFC } from 'react';
 
 interface EditTodoProps {
@@ -26,6 +28,9 @@ interface itemProps {
 
 const EditTodo: VFC<EditTodoProps> = ({ item }) => {
   const { todo_id, description: currentDescription } = item;
+  const queryClient = useQueryClient();
+  const { enqueueSnackbar } = useSnackbar();
+
   const [isEditing, setIsEditing] = useState(false);
   const [description, setDescription] = useState(currentDescription);
 
@@ -33,8 +38,19 @@ const EditTodo: VFC<EditTodoProps> = ({ item }) => {
     setIsEditing((prev) => !prev);
   };
 
-  const handleUpdateTodo = () => {
-    console.log(todo_id);
+  const { mutateAsync } = useMutation(updateTodo, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('todos');
+      enqueueSnackbar('Successfully updated Todo', { variant: 'success' });
+      handleToggleEdit();
+    },
+    onError: () => {
+      enqueueSnackbar('Something went wrong.', { variant: 'error' });
+    }
+  });
+
+  const handleUpdateTodo = async () => {
+    await mutateAsync({ id: todo_id, description });
   };
 
   return (

@@ -26,6 +26,7 @@ export const createTodo = async ({ description }: NewTodo) => {
 
 interface Todo {
   id: number;
+  description?: string;
 }
 
 export const getTodo = async ({ id }: Todo) => {
@@ -37,9 +38,11 @@ export const getTodo = async ({ id }: Todo) => {
   }
 };
 
-export const updateTodo = async ({ id }: Todo) => {
+export const updateTodo = async ({ id, description }: Todo) => {
   try {
-    const res = await axios.put(`http://localhost:5000/todos/${id}`);
+    const res = await axios.put(`http://localhost:5000/todos/${id}`, {
+      description
+    });
     return res.data;
   } catch (err: any) {
     return err.response.data;
