@@ -2,5 +2,8 @@ CREATE DATABASE perntodo;
 
 CREATE TABLE todo(
   todo_id SERIAL PRIMARY KEY,
-  description VARCHAR(255)
+  description VARCHAR(255),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  completed_at TIMESTAMPTZ
 );
