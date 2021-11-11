@@ -13,8 +13,7 @@
     "start": "concurrently \"npm run server:start\" \"npm run client:start\" ",
     "dev": "concurrently \"npm run server:dev\" \"npm run client:start\" ",
     "install:both": "concurrently \"npm npm run server:install\" \"npm run client:install\" ",
-    "prepare": "husky install",
-    "postinstall": "node node_modules/protractor/bin/webdriver-manager update"
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",

@@ -11,6 +11,12 @@ app.use(express.json()); //req.body
 app.use(timeout('2000'));
 
 // ROUTES //
+
+// Welcome
+app.get('/', async (req, res) => {
+  return res.json('Welcome to my todo API');
+});
+
 // create a todo
 app.post('/todos', async (req, res) => {
   try {
@@ -89,6 +95,6 @@ app.delete('/todos/:id', async (req, res) => {
   }
 });
 
-app.listen(5000, () => {
-  console.log('server has started on port 5000');
-});
+const port = process.env.PORT || 5000;
+
+app.listen(port, () => console.log(`Server running on port ${port}`));
