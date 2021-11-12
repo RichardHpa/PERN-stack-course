@@ -18,7 +18,7 @@ app.get('/', async (req, res) => {
 });
 
 // create a todo
-app.post('/todos', async (req, res) => {
+app.post('/api/todos', async (req, res) => {
   try {
     const { description } = req.body;
     if (!description || description.length === 0) {
@@ -34,7 +34,7 @@ app.post('/todos', async (req, res) => {
 });
 
 // get all todos
-app.get('/todos', async (req, res) => {
+app.get('/api/todos', async (req, res) => {
   try {
     const allTodos = await pool.query('SELECT * FROM todo');
     res.json(allTodos.rows);
@@ -44,7 +44,7 @@ app.get('/todos', async (req, res) => {
 });
 
 //get a todo
-app.get('/todos/:id', async (req, res) => {
+app.get('/api/todos/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const todo = await pool.query('SELECT * FROM todo WHERE todo_id = $1', [id]);
@@ -59,7 +59,7 @@ app.get('/todos/:id', async (req, res) => {
 });
 
 // update a todo
-app.put('/todos/:id', async (req, res) => {
+app.put('/api/todos/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const { description } = req.body;
@@ -81,7 +81,7 @@ app.put('/todos/:id', async (req, res) => {
 });
 
 // delete a todo
-app.delete('/todos/:id', async (req, res) => {
+app.delete('/api/todos/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const deleteTodo = await pool.query('DELETE FROM todo WHERE todo_id = $1', [id]);
