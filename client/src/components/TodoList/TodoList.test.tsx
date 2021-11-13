@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 import render from 'tests/AppWrapper';
 import TodoList from '.';
 
-describe('TodoList', () => {
+describe.skip('TodoList', () => {
   it('should render', () => {
     render(<TodoList />);
     screen.getByRole('list');

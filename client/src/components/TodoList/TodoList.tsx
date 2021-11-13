@@ -4,7 +4,8 @@ import {
   List,
   ListItem,
   ListItemText,
-  ListItemSecondaryAction
+  ListItemSecondaryAction,
+  Alert
 } from '@mui/material';
 import DeleteTodo from 'components/DeleteTodo';
 import EditTodo from 'components/EditTodo';
@@ -16,7 +17,14 @@ const getLocalTime = (date: Date, format = 'LT DD-MM-YYYY') => {
 };
 
 const TodoList = () => {
-  const { data } = useQuery('todos', getAllTodos);
+  const { data, isLoading } = useQuery('todos', getAllTodos);
+
+  if (isLoading) {
+    return <Alert severity="info">Loading</Alert>;
+  }
+  if (data.length === 0) {
+    return <Alert severity="info">This is an info alert — check it out!</Alert>;
+  }
 
   return (
     <List>

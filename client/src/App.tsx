@@ -64,11 +64,7 @@ function App() {
           </Grid>
         </Paper>
         <Paper>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TodoList />
-            </Grid>
-          </Grid>
+          <TodoList />
         </Paper>
       </Container>
       <Loading isLoading={isLoading} />

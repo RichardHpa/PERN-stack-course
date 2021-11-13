@@ -6,6 +6,7 @@ exports.up = pgm => {
   pgm.createTable('todo', {
     todo_id: 'id',
     description: { type: 'varchar(1000)', notNull: true },
+    a: { type: 'smallint', notNull: true, default: 1 },
     createdAt: {
       type: 'timestamp',
       notNull: true,
