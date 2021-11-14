@@ -76,7 +76,7 @@ app.put('/api/todos/:id', async (req, res) => {
       res.json('Todo was updated!');
     }
   } catch (err) {
-    res.status(500).json('Cannot find todo with that id number');
+    res.status(500).json(err);
   }
 });
 

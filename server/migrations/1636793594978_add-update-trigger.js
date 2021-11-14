@@ -14,7 +14,7 @@ exports.up = pgm => {
     },
     `
 BEGIN
-  NEW.a := NEW.a + 1;
+  NEW.updated_at = CURRENT_TIMESTAMP;
   return NEW;
 END;
   `

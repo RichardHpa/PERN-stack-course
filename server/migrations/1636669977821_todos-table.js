@@ -6,18 +6,17 @@ exports.up = pgm => {
   pgm.createTable('todo', {
     todo_id: 'id',
     description: { type: 'varchar(1000)', notNull: true },
-    a: { type: 'smallint', notNull: true, default: 1 },
-    createdAt: {
+    created_at: {
       type: 'timestamp',
       notNull: true,
       default: pgm.func('current_timestamp'),
     },
-    updatedAt: {
+    updated_at: {
       type: 'timestamp',
       notNull: true,
       default: pgm.func('current_timestamp'),
     },
-    completedAt: {
+    completed_at: {
       type: 'timestamp',
     },
   });
