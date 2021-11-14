@@ -14,8 +14,12 @@ exports.up = pgm => {
     },
     `
 BEGIN
-  NEW.updated_at = CURRENT_TIMESTAMP;
-  return NEW;
+  IF row(NEW.*) IS DISTINCT FROM row(OLD.*) THEN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+  ELSE
+    RETURN OLD;
+  END IF;
 END;
   `
   );

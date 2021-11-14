@@ -35,8 +35,11 @@ app.post('/api/todos', async (req, res) => {
 
 // get all todos
 app.get('/api/todos', async (req, res) => {
+  const { orderBy = 'created_at', asc = 'true' } = req.query;
   try {
-    const allTodos = await pool.query('SELECT * FROM todo');
+    const allTodos = await pool.query(
+      `SELECT * FROM todo ORDER BY ${orderBy} ${asc === 'true' ? 'ASC' : 'DESC'}`
+    );
     res.json(allTodos.rows);
   } catch (err) {
     res.status(500).json('Something went wrong');
