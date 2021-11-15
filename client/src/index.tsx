@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import CssBaseline from '@mui/material/CssBaseline';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { LoadingProvider } from './context/LoadingProvider';
 
 const theme = createTheme({});
 const queryClient = new QueryClient();
@@ -21,20 +22,22 @@ ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <QueryClientProvider client={queryClient}>
-        <SnackbarProvider
-          maxSnack={3}
-          preventDuplicate
-          ref={notistackRef}
-          action={(key) => (
-            <IconButton onClick={onClickDismiss(key)} color="inherit">
-              <CloseIcon />
-            </IconButton>
-          )}
-        >
-          <App />
-        </SnackbarProvider>
-      </QueryClientProvider>
+      <LoadingProvider>
+        <QueryClientProvider client={queryClient}>
+          <SnackbarProvider
+            maxSnack={3}
+            preventDuplicate
+            ref={notistackRef}
+            action={(key) => (
+              <IconButton onClick={onClickDismiss(key)} color="inherit">
+                <CloseIcon />
+              </IconButton>
+            )}
+          >
+            <App />
+          </SnackbarProvider>
+        </QueryClientProvider>
+      </LoadingProvider>
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')

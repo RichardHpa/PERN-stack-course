@@ -35,10 +35,12 @@ app.post('/api/todos', async (req, res) => {
 
 // get all todos
 app.get('/api/todos', async (req, res) => {
-  const { orderBy = 'created_at', asc = 'true' } = req.query;
+  const { sort_by = 'created_at', order_by = 'ASC', completed = 'false' } = req.query;
   try {
     const allTodos = await pool.query(
-      `SELECT * FROM todo ORDER BY ${orderBy} ${asc === 'true' ? 'ASC' : 'DESC'}`
+      `SELECT * FROM todo WHERE completed_at IS ${
+        completed === 'true' ? 'NOT' : ''
+      } NULL ORDER BY ${sort_by} ${order_by}`
     );
     res.json(allTodos.rows);
   } catch (err) {
