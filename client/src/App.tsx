@@ -4,17 +4,18 @@ import { createTodo } from 'api/todos';
 import Header from 'layouts/Header';
 import { Container, Paper, TextField, Grid, Button } from '@mui/material';
 import { useSnackbar } from 'notistack';
-import Loading from 'components/Loading';
 import TodoList from 'components/TodoList';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from 'components/ErrorFallback';
+import { useLoadingContext } from 'context/LoadingProvider';
 
 function App() {
   const [description, setDescription] = useState('');
   const queryClient = useQueryClient();
   const { enqueueSnackbar } = useSnackbar();
+  const { toggleLoading } = useLoadingContext();
 
-  const { mutate, isLoading } = useMutation(createTodo, {
+  const { mutate } = useMutation(createTodo, {
     onSuccess: (data) => {
       enqueueSnackbar('Success', { variant: 'success' });
       setDescription('');
@@ -23,6 +24,7 @@ function App() {
       enqueueSnackbar('Something went wrong', { variant: 'error' });
     },
     onSettled: () => {
+      toggleLoading(false);
       queryClient.invalidateQueries('todos');
     }
   });
@@ -32,6 +34,7 @@ function App() {
   };
 
   const handleSubmit = () => {
+    toggleLoading(true);
     mutate({ description });
   };
 
@@ -71,7 +74,6 @@ function App() {
           </Paper>
         </ErrorBoundary>
       </Container>
-      <Loading isLoading={isLoading} />
     </div>
   );
 }

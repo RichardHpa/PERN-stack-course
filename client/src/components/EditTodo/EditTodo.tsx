@@ -14,6 +14,7 @@ import {
 import CreateIcon from '@mui/icons-material/Create';
 import { updateTodo } from 'api/todos';
 import { useSnackbar } from 'notistack';
+import { useLoadingContext } from 'context/LoadingProvider';
 
 import type { VFC } from 'react';
 
@@ -30,6 +31,7 @@ const EditTodo: VFC<EditTodoProps> = ({ item }) => {
   const { todo_id, description: currentDescription } = item;
   const queryClient = useQueryClient();
   const { enqueueSnackbar } = useSnackbar();
+  const { toggleLoading } = useLoadingContext();
 
   const [isEditing, setIsEditing] = useState(false);
   const [description, setDescription] = useState(currentDescription);
@@ -46,10 +48,14 @@ const EditTodo: VFC<EditTodoProps> = ({ item }) => {
     },
     onError: () => {
       enqueueSnackbar('Something went wrong.', { variant: 'error' });
+    },
+    onSettled: () => {
+      toggleLoading(false);
     }
   });
 
   const handleUpdateTodo = async () => {
+    toggleLoading(true);
     await mutateAsync({ id: todo_id, description });
   };
 

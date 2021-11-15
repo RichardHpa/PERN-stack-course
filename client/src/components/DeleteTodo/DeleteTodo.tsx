@@ -3,6 +3,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useQueryClient, useMutation } from 'react-query';
 import { useSnackbar } from 'notistack';
 import { deleteTodo } from 'api/todos';
+import { useLoadingContext } from 'context/LoadingProvider';
 
 interface DeleteTodoProps {
   itemId: number;
@@ -10,6 +11,7 @@ interface DeleteTodoProps {
 const DeleteTodo = ({ itemId }: DeleteTodoProps) => {
   const queryClient = useQueryClient();
   const { enqueueSnackbar } = useSnackbar();
+  const { toggleLoading } = useLoadingContext();
 
   const { mutateAsync } = useMutation(deleteTodo, {
     onSuccess: () => {
@@ -18,10 +20,14 @@ const DeleteTodo = ({ itemId }: DeleteTodoProps) => {
     },
     onError: () => {
       enqueueSnackbar('Something went wrong.', { variant: 'error' });
+    },
+    onSettled: () => {
+      toggleLoading(false);
     }
   });
 
   const handleDelete = async () => {
+    toggleLoading(true);
     await mutateAsync({ id: itemId });
   };
 

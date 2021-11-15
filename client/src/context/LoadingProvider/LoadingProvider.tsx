@@ -4,11 +4,12 @@ import { Backdrop, CircularProgress } from '@mui/material';
 
 interface LoadingContextProps {
   isLoading: boolean;
-  toggleLoading?: () => void;
+  toggleLoading: (value: boolean) => void;
 }
 
 const defaultState = {
-  isLoading: false
+  isLoading: false,
+  toggleLoading: () => {}
 };
 
 const LoadingContext = createContext<LoadingContextProps>(defaultState);
@@ -16,8 +17,8 @@ const LoadingContext = createContext<LoadingContextProps>(defaultState);
 export const LoadingProvider: FC = ({ children }) => {
   const [isLoading, setIsLoading] = useState(defaultState.isLoading);
 
-  const toggleLoading = () => {
-    setIsLoading(!isLoading);
+  const toggleLoading = (value: boolean) => {
+    setIsLoading(value);
   };
 
   return (
