@@ -12,7 +12,7 @@ const ErrorFallback = ({ error, resetErrorBoundary }: FallbackProps) => {
           </Button>
         }
       >
-        <AlertTitle>Something went wrong.</AlertTitle>
+        <AlertTitle data-testid="alert-title">Something went wrong.</AlertTitle>
         <pre>{error.message}</pre>
       </Alert>
     </Box>

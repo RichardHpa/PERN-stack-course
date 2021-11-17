@@ -4,9 +4,9 @@ import DeleteTodo from '.';
 import userEvent from '@testing-library/user-event';
 
 describe('DeleteTodo', () => {
-  it('should render', () => {
+  it('should render', async () => {
     render(<DeleteTodo itemId={1} />);
-    screen.getByRole('button');
+    await screen.findByRole('button', { name: 'delete' });
   });
 
   it('should show success message if delete is successful', async () => {
