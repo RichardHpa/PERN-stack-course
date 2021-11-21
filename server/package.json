@@ -11,6 +11,7 @@
   "author": "Richard M Hpa <richard.m.hpa@gmail.com> (https://richard-hpa.com/)",
   "license": "MIT",
   "dependencies": {
+    "@prisma/client": "^3.5.0",
     "config": "^3.3.6",
     "connect-timeout": "^1.9.0",
     "cors": "^2.8.5",
@@ -18,5 +19,8 @@
     "express": "^4.17.1",
     "node-pg-migrate": "^6.0.0",
     "pg": "^8.7.1"
+  },
+  "devDependencies": {
+    "prisma": "^3.5.0"
   }
 }

@@ -4,6 +4,9 @@ const cors = require('cors');
 const pool = require('./db');
 require('dotenv').config();
 const timeout = require('connect-timeout');
+const { PrismaClient, Prisma } = require('@prisma/client');
+
+const prisma = new PrismaClient();
 
 // middleware
 app.use(cors());
@@ -24,25 +27,29 @@ app.post('/api/todos', async (req, res) => {
     if (!description || description.length === 0) {
       return res.status(400).json('Your request is missing a description');
     }
-    const newTodo = await pool.query('INSERT INTO todo (description) VALUES($1) RETURNING *', [
-      description,
-    ]);
-    res.json(newTodo.rows[0]);
+    const newTodo = await prisma.todo.create({
+      data: {
+        description,
+      },
+    });
+    res.json(newTodo);
   } catch (err) {
+    console.error(err.message);
     res.status(500).json('Something went wrong');
   }
 });
 
 // get all todos
 app.get('/api/todos', async (req, res) => {
-  const { sort_by = 'created_at', order_by = 'ASC', completed = 'false' } = req.query;
+  // const { sort_by = 'created_at', order_by = 'ASC', completed = 'false' } = req.query;
   try {
-    const allTodos = await pool.query(
-      `SELECT * FROM todo WHERE completed_at IS ${
-        completed === 'true' ? 'NOT' : ''
-      } NULL ORDER BY ${sort_by} ${order_by}`
-    );
-    res.json(allTodos.rows);
+    // const allTodos = await pool.query(
+    //   `SELECT * FROM Todo WHERE completedAt IS ${
+    //     completed === 'true' ? 'NOT' : ''
+    //   } NULL ORDER BY ${sort_by} ${order_by}`
+    // );
+    const allTodos = await prisma.todo.findMany();
+    res.json(allTodos);
   } catch (err) {
     res.status(500).json('Something went wrong');
   }
@@ -52,7 +59,7 @@ app.get('/api/todos', async (req, res) => {
 app.get('/api/todos/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const todo = await pool.query('SELECT * FROM todo WHERE todo_id = $1', [id]);
+    const todo = await pool.query('SELECT * FROM Todo WHERE todo_id = $1', [id]);
     if (todo.rowCount === 0) {
       res.status(404).json('Cannot find todo with that id number');
     } else {
@@ -71,7 +78,7 @@ app.put('/api/todos/:id', async (req, res) => {
     if (!description || description.length === 0) {
       return res.status(400).json('Your request is missing a description');
     }
-    const updateTodo = await pool.query('UPDATE todo SET description = $1 WHERE todo_id = $2', [
+    const updateTodo = await pool.query('UPDATE Todo SET description = $1 WHERE todo_id = $2', [
       description,
       id,
     ]);
@@ -89,7 +96,7 @@ app.put('/api/todos/:id', async (req, res) => {
 app.delete('/api/todos/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const deleteTodo = await pool.query('DELETE FROM todo WHERE todo_id = $1', [id]);
+    const deleteTodo = await pool.query('DELETE FROM Todo WHERE todo_id = $1', [id]);
     if (deleteTodo.rowCount === 0) {
       res.status(404).json('Cannot find todo with that id number');
     } else {
